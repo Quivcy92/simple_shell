@@ -42,7 +42,7 @@ void bring_line(char **lineptr, size_t *n, char *buffer, size_t j)
  */
 ssize_t get_line(char **lineptr, size_t *n, FILE *stream)
 {
-	int i;
+	int s;
 	static ssize_t input;
 	ssize_t retval;
 	char *buffer;
@@ -59,13 +59,13 @@ ssize_t get_line(char **lineptr, size_t *n, FILE *stream)
 		return (-1);
 	while (t != '\n')
 	{
-		i = read(STDIN_FILENO, &t, 1);
-		if (i == -1 || (i == 0 && input == 0))
+		s = read(STDIN_FILENO, &t, 1);
+		if (s == -1 || (s == 0 && input == 0))
 		{
 			free(buffer);
 			return (-1);
 		}
-		if (i == 0 && input != 0)
+		if (s == 0 && input != 0)
 		{
 			input++;
 			break;
@@ -78,7 +78,7 @@ ssize_t get_line(char **lineptr, size_t *n, FILE *stream)
 	buffer[input] = '\0';
 	bring_line(lineptr, n, buffer, input);
 	retval = input;
-	if (i != 0)
+	if (s != 0)
 		input = 0;
 	return (retval);
 }

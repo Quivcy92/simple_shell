@@ -16,13 +16,13 @@ int (*get_builtin(char *cmd))(data_shell *)
 		{ "help", get_help },
 		{ NULL, NULL }
 	};
-	int i;
+	int s;
 
-	for (i = 0; builtin[i].name; i++)
+	for (s = 0; builtin[s].name; s++)
 	{
-		if (_strcmp(builtin[i].name, cmd) == 0)
+		if (_strcmp(builtin[s].name, cmd) == 0)
 			break;
 	}
 
-	return (builtin[i].f);
+	return (builtin[s].f);
 }

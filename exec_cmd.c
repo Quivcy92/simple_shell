@@ -32,14 +32,14 @@ int is_cdir(char *path, int *i)
 char *_which(char *cmd, char **_environ)
 {
 	char *path, *ptr_path, *token_path, *dir;
-	int len_dir, len_cmd, i;
+	int l_dir, l_cmd, i;
 	struct stat st;
 
 	path = _getenv("PATH", _environ);
 	if (path)
 	{
 		ptr_path = _strdup(path);
-		len_cmd = _strlen(cmd);
+		l_cmd = _strlen(cmd);
 		token_path = _strtok(ptr_path, ":");
 		i = 0;
 		while (token_path != NULL)
@@ -47,8 +47,8 @@ char *_which(char *cmd, char **_environ)
 			if (is_cdir(path, &i))
 				if (stat(cmd, &st) == 0)
 					return (cmd);
-			len_dir = _strlen(token_path);
-			dir = malloc(len_dir + len_cmd + 2);
+			l_dir = _strlen(token_path);
+			dir = malloc(l_dir + l_cmd + 2);
 			_strcpy(dir, token_path);
 			_strcat(dir, "/");
 			_strcat(dir, cmd);
@@ -81,37 +81,37 @@ char *_which(char *cmd, char **_environ)
 int is_executable(data_shell *datash)
 {
 	struct stat st;
-	int i;
+	int s;
 	char *input;
 
 	input = datash->args[0];
-	for (i = 0; input[i]; i++)
+	for (s = 0; input[s]; s++)
 	{
-		if (input[i] == '.')
+		if (input[s] == '.')
 		{
-			if (input[i + 1] == '.')
+			if (input[s + 1] == '.')
 				return (0);
-			if (input[i + 1] == '/')
+			if (input[s + 1] == '/')
 				continue;
 			else
 				break;
 		}
-		else if (input[i] == '/' && i != 0)
+		else if (input[s] == '/' && s != 0)
 		{
-			if (input[i + 1] == '.')
+			if (input[s + 1] == '.')
 				continue;
-			i++;
+			s++;
 			break;
 		}
 		else
 			break;
 	}
-	if (i == 0)
+	if (s == 0)
 		return (0);
 
-	if (stat(input + i, &st) == 0)
+	if (stat(input + s, &st) == 0)
 	{
-		return (i);
+		return (s);
 	}
 	get_error(datash, 127);
 	return (-1);
