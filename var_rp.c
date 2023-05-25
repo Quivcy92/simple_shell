@@ -10,35 +10,35 @@
  */
 void check_env(r_var **h, char *in, data_shell *data)
 {
-	int row, chr, j, lval;
+	int row, chr, x, lval;
 	char **_envr;
 
 	_envr = data->_environ;
 	for (row = 0; _envr[row]; row++)
 	{
-		for (j = 1, chr = 0; _envr[row][chr]; chr++)
+		for (x = 1, chr = 0; _envr[row][chr]; chr++)
 		{
 			if (_envr[row][chr] == '=')
 			{
 				lval = _strlen(_envr[row] + chr + 1);
-				add_rvar_node(h, j, _envr[row] + chr + 1, lval);
+				add_rvar_node(h, x, _envr[row] + chr + 1, lval);
 				return;
 			}
 
-			if (in[j] == _envr[row][chr])
-				j++;
+			if (in[x] == _envr[row][chr])
+				x++;
 			else
 				break;
 		}
 	}
 
-	for (j = 0; in[j]; j++)
+	for (x = 0; in[x]; x++)
 	{
-		if (in[j] == ' ' || in[j] == '\t' || in[j] == ';' || in[j] == '\n')
+		if (in[x] == ' ' || in[x] == '\t' || in[x] == ';' || in[x] == '\n')
 			break;
 	}
 
-	add_rvar_node(h, j, NULL, 0);
+	add_rvar_node(h, x, NULL, 0);
 }
 
 /**
@@ -52,35 +52,35 @@ void check_env(r_var **h, char *in, data_shell *data)
  */
 int check_vars(r_var **h, char *in, char *st, data_shell *data)
 {
-	int i, lst, lpd;
+	int s, lst, lpd;
 
 	lst = _strlen(st);
 	lpd = _strlen(data->pid);
 
-	for (i = 0; in[i]; i++)
+	for (s = 0; in[s]; s++)
 	{
-		if (in[i] == '$')
+		if (in[s] == '$')
 		{
-			if (in[i + 1] == '?')
-				add_rvar_node(h, 2, st, lst), i++;
-			else if (in[i + 1] == '$')
-				add_rvar_node(h, 2, data->pid, lpd), i++;
-			else if (in[i + 1] == '\n')
+			if (in[s + 1] == '?')
+				add_rvar_node(h, 2, st, lst), s++;
+			else if (in[s + 1] == '$')
+				add_rvar_node(h, 2, data->pid, lpd), s++;
+			else if (in[s + 1] == '\n')
 				add_rvar_node(h, 0, NULL, 0);
-			else if (in[i + 1] == '\0')
+			else if (in[s + 1] == '\0')
 				add_rvar_node(h, 0, NULL, 0);
-			else if (in[i + 1] == ' ')
+			else if (in[s + 1] == ' ')
 				add_rvar_node(h, 0, NULL, 0);
-			else if (in[i + 1] == '\t')
+			else if (in[s + 1] == '\t')
 				add_rvar_node(h, 0, NULL, 0);
-			else if (in[i + 1] == ';')
+			else if (in[s + 1] == ';')
 				add_rvar_node(h, 0, NULL, 0);
 			else
-				check_env(h, in + i, data);
+				check_env(h, in + s, data);
 		}
 	}
 
-	return (i);
+	return (s);
 }
 
 /**
@@ -95,40 +95,40 @@ int check_vars(r_var **h, char *in, char *st, data_shell *data)
 char *replaced_input(r_var **head, char *input, char *new_input, int nlen)
 {
 	r_var *indx;
-	int i, j, k;
+	int s, x, d;
 
 	indx = *head;
-	for (j = i = 0; i < nlen; i++)
+	for (x = s = 0; s < nlen; s++)
 	{
-		if (input[j] == '$')
+		if (input[x] == '$')
 		{
 			if (!(indx->len_var) && !(indx->len_val))
 			{
-				new_input[i] = input[j];
-				j++;
+				new_input[s] = input[x];
+				x++;
 			}
 			else if (indx->len_var && !(indx->len_val))
 			{
-				for (k = 0; k < indx->len_var; k++)
-					j++;
-				i--;
+				for (d = 0; d < indx->len_var; d++)
+					x++;
+				s--;
 			}
 			else
 			{
-				for (k = 0; k < indx->len_val; k++)
+				for (d = 0; d < indx->len_val; d++)
 				{
-					new_input[i] = indx->val[k];
-					i++;
+					new_input[s] = indx->val[d];
+					s++;
 				}
-				j += (indx->len_var);
-				i--;
+				x += (indx->len_var);
+				s--;
 			}
 			indx = indx->next;
 		}
 		else
 		{
-			new_input[i] = input[j];
-			j++;
+			new_input[s] = input[x];
+			x++;
 		}
 	}
 

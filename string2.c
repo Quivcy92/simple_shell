@@ -8,13 +8,13 @@
 char *_strdup(const char *s)
 {
 	char *new;
-	size_t len;
+	size_t l;
 
-	len = _strlen(s);
-	new = malloc(sizeof(char) * (len + 1));
+	l = _strlen(s);
+	new = malloc(sizeof(char) * (l + 1));
 	if (new == NULL)
 		return (NULL);
-	_memcpy(new, s, len + 1);
+	_memcpy(new, s, l + 1);
 	return (new);
 }
 
@@ -25,12 +25,12 @@ char *_strdup(const char *s)
  */
 int _strlen(const char *s)
 {
-	int len;
+	int l;
 
-	for (len = 0; s[len] != 0; len++)
+	for (l = 0; s[l] != 0; l++)
 	{
 	}
-	return (len);
+	return (l);
 }
 
 /**
@@ -42,20 +42,20 @@ int _strlen(const char *s)
  */
 int cmp_chars(char str[], const char *delim)
 {
-	unsigned int i, j, k;
+	unsigned int s, x, d;
 
-	for (i = 0, k = 0; str[i]; i++)
+	for (s = 0, d = 0; str[s]; s++)
 	{
-		for (j = 0; delim[j]; j++)
+		for (x = 0; delim[x]; x++)
 		{
-			if (str[i] == delim[j])
+			if (str[s] == delim[x])
 			{
-				k++;
+				d++;
 				break;
 			}
 		}
 	}
-	if (i == k)
+	if (s == d)
 		return (1);
 	return (0);
 }
@@ -71,15 +71,15 @@ char *_strtok(char str[], const char *delim)
 {
 	static char *splitted, *str_end;
 	char *str_start;
-	unsigned int i, bool;
+	unsigned int s, bool;
 
 	if (str != NULL)
 	{
 		if (cmp_chars(str, delim))
 			return (NULL);
 		splitted = str; /*Store first address*/
-		i = _strlen(str);
-		str_end = &str[i]; /*Store last address*/
+		s = _strlen(str);
+		str_end = &str[s]; /*Store last address*/
 	}
 	str_start = splitted;
 	if (str_start == str_end) /*Reaching the end*/
@@ -92,9 +92,9 @@ char *_strtok(char str[], const char *delim)
 			if (*splitted && *(splitted - 1) == '\0')
 				break;
 		/*Replacing delimiter for null char*/
-		for (i = 0; delim[i]; i++)
+		for (s = 0; delim[s]; s++)
 		{
-			if (*splitted == delim[i])
+			if (*splitted == delim[s])
 			{
 				*splitted = '\0';
 				if (splitted == str_start)
@@ -118,11 +118,11 @@ char *_strtok(char str[], const char *delim)
  */
 int _isdigit(const char *s)
 {
-	unsigned int i;
+	unsigned int y;
 
-	for (i = 0; s[i]; i++)
+	for (y = 0; s[y]; y++)
 	{
-		if (s[i] < 48 || s[i] > 57)
+		if (s[y] < 48 || s[y] > 57)
 			return (0);
 	}
 	return (1);

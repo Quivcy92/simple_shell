@@ -8,19 +8,19 @@
  */
 char *_strcat(char *dest, const char *src)
 {
-	int i;
-	int j;
+	int s;
+	int x;
 
-	for (i = 0; dest[i] != '\0'; i++)
+	for (s = 0; dest[s] != '\0'; s++)
 		;
 
-	for (j = 0; src[j] != '\0'; j++)
+	for (x = 0; src[x] != '\0'; x++)
 	{
-		dest[i] = src[j];
-		i++;
+		dest[s] = src[x];
+		s++;
 	}
 
-	dest[i] = '\0';
+	dest[s] = '\0';
 	return (dest);
 }
 /**
@@ -32,13 +32,13 @@ char *_strcat(char *dest, const char *src)
 char *_strcpy(char *dest, char *src)
 {
 
-	size_t a;
+	size_t d;
 
-	for (a = 0; src[a] != '\0'; a++)
+	for (d = 0; src[d] != '\0'; d++)
 	{
-		dest[a] = src[a];
+		dest[d] = src[d];
 	}
-	dest[a] = '\0';
+	dest[d] = '\0';
 
 	return (dest);
 }
@@ -50,14 +50,14 @@ char *_strcpy(char *dest, char *src)
  */
 int _strcmp(char *s1, char *s2)
 {
-	int i;
+	int s;
 
-	for (i = 0; s1[i] == s2[i] && s1[i]; i++)
+	for (s = 0; s1[s] == s2[s] && s1[s]; s++)
 		;
 
-	if (s1[i] > s2[i])
+	if (s1[s] > s2[s])
 		return (1);
-	if (s1[i] < s2[i])
+	if (s1[s] < s2[s])
 		return (-1);
 	return (0);
 }
@@ -86,14 +86,14 @@ char *_strchr(char *s, char c)
  */
 int _strspn(char *s, char *accept)
 {
-	int i, j, bool;
+	int y, x, bool;
 
-	for (i = 0; *(s + i) != '\0'; i++)
+	for (y = 0; *(s + y) != '\0'; y++)
 	{
 		bool = 1;
-		for (j = 0; *(accept + j) != '\0'; j++)
+		for (x = 0; *(accept + x) != '\0'; x++)
 		{
-			if (*(s + i) == *(accept + j))
+			if (*(s + y) == *(accept + x))
 			{
 				bool = 0;
 				break;
@@ -102,5 +102,5 @@ int _strspn(char *s, char *accept)
 		if (bool == 1)
 			break;
 	}
-	return (i);
+	return (y);
 }
