@@ -9,35 +9,35 @@
  */
 char *swap_char(char *input, int bool)
 {
-	int i;
+	int s;
 
 	if (bool == 0)
 	{
-		for (i = 0; input[i]; i++)
+		for (s = 0; input[s]; s++)
 		{
-			if (input[i] == '|')
+			if (input[s] == '|')
 			{
-				if (input[i + 1] != '|')
-					input[i] = 16;
+				if (input[s + 1] != '|')
+					input[s] = 16;
 				else
-					i++;
+					s++;
 			}
 
-			if (input[i] == '&')
+			if (input[s] == '&')
 			{
-				if (input[i + 1] != '&')
-					input[i] = 12;
+				if (input[s + 1] != '&')
+					input[s] = 12;
 				else
-					i++;
+					s++;
 			}
 		}
 	}
 	else
 	{
-		for (i = 0; input[i]; i++)
+		for (s = 0; input[s]; s++)
 		{
-			input[i] = (input[i] == 16 ? '|' : input[i]);
-			input[i] = (input[i] == 12 ? '&' : input[i]);
+			input[s] = (input[s] == 16 ? '|' : input[s]);
+			input[s] = (input[s] == 12 ? '&' : input[s]);
 		}
 	}
 	return (input);
@@ -53,20 +53,20 @@ char *swap_char(char *input, int bool)
  */
 void add_nodes(sep_list **head_s, line_list **head_l, char *input)
 {
-	int i;
+	int s;
 	char *line;
 
 	input = swap_char(input, 0);
 
-	for (i = 0; input[i]; i++)
+	for (s = 0; input[s]; s++)
 	{
-		if (input[i] == ';')
-			add_sep_node_end(head_s, input[i]);
+		if (input[s] == ';')
+			add_sep_node_end(head_s, input[s]);
 
-		if (input[i] == '|' || input[i] == '&')
+		if (input[s] == '|' || input[s] == '&')
 		{
-			add_sep_node_end(head_s, input[i]);
-			i++;
+			add_sep_node_end(head_s, input[s]);
+			s++;
 		}
 	}
 
@@ -89,31 +89,31 @@ void add_nodes(sep_list **head_s, line_list **head_l, char *input)
  */
 void go_next(sep_list **list_s, line_list **list_l, data_shell *datash)
 {
-	int loop_sep;
+	int lp;
 	sep_list *ls_s;
 	line_list *ls_l;
 
-	loop_sep = 1;
+	lp = 1;
 	ls_s = *list_s;
 	ls_l = *list_l;
 
-	while (ls_s != NULL && loop_sep)
+	while (ls_s != NULL && lp)
 	{
 		if (datash->status == 0)
 		{
 			if (ls_s->separator == '&' || ls_s->separator == ';')
-				loop_sep = 0;
+				lp = 0;
 			if (ls_s->separator == '|')
 				ls_l = ls_l->next, ls_s = ls_s->next;
 		}
 		else
 		{
 			if (ls_s->separator == '|' || ls_s->separator == ';')
-				loop_sep = 0;
+				lp = 0;
 			if (ls_s->separator == '&')
 				ls_l = ls_l->next, ls_s = ls_s->next;
 		}
-		if (ls_s != NULL && !loop_sep)
+		if (ls_s != NULL && !lp)
 			ls_s = ls_s->next;
 	}
 
@@ -134,7 +134,7 @@ int split_commands(data_shell *datash, char *input)
 
 	sep_list *head_s, *list_s;
 	line_list *head_l, *list_l;
-	int loop;
+	int lp;
 
 	head_s = NULL;
 	head_l = NULL;
@@ -148,10 +148,10 @@ int split_commands(data_shell *datash, char *input)
 	{
 		datash->input = list_l->line;
 		datash->args = split_line(datash->input);
-		loop = exec_line(datash);
+		lp = exec_line(datash);
 		free(datash->args);
 
-		if (loop == 0)
+		if (lp == 0)
 			break;
 
 		go_next(&list_s, &list_l, datash);
@@ -163,7 +163,7 @@ int split_commands(data_shell *datash, char *input)
 	free_sep_list(&head_s);
 	free_line_list(&head_l);
 
-	if (loop == 0)
+	if (lp == 0)
 		return (0);
 	return (1);
 }
@@ -177,7 +177,7 @@ int split_commands(data_shell *datash, char *input)
 char **split_line(char *input)
 {
 	size_t bsize;
-	size_t i;
+	size_t s;
 	char **tokens;
 	char *token;
 
@@ -192,12 +192,12 @@ char **split_line(char *input)
 	token = _strtok(input, TOK_DELIM);
 	tokens[0] = token;
 
-	for (i = 1; token != NULL; i++)
+	for (s = 1; token != NULL; s++)
 	{
-		if (i == bsize)
+		if (s == bsize)
 		{
 			bsize += TOK_BUFSIZE;
-			tokens = _reallocdp(tokens, i, sizeof(char *) * bsize);
+			tokens = _reallocdp(tokens, s, sizeof(char *) * bsize);
 			if (tokens == NULL)
 			{
 				write(STDERR_FILENO, ": allocation error\n", 18);
@@ -205,7 +205,7 @@ char **split_line(char *input)
 			}
 		}
 		token = _strtok(NULL, TOK_DELIM);
-		tokens[i] = token;
+		tokens[s] = token;
 	}
 
 	return (tokens);
